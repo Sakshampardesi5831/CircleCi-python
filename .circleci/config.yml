@@ -12,10 +12,22 @@ jobs:
     steps:
         - checkout
         - run: python tests.py
+  deploy:
+     docker:
+        - image: cimg/base:current
+     steps:
+       - run: echo "Deploying to production server"
+
 workflows:
   build_and_test:
     jobs:
       - build
       - test:
           requires:
-            - build       
+            - build  
+      - deploy:
+            requires:
+              - test
+            filters:
+              branches:
+                 only: main     
