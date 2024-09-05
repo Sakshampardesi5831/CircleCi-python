@@ -6,7 +6,16 @@ jobs:
     steps:
         - checkout
         - run: python main.py
+  test:
+    docker:
+      - image: cimg/base:current
+    steps:
+        - checkout
+        - run: python tests.py
 workflows:
-  build_now:
+  build_and_test:
     jobs:
-      - build       
+      - build
+      - test:
+          requires:
+            - build       
